@@ -133,14 +133,14 @@ variant="standard"
 </Paper>
 <Box sx={{ m:10, flex: 1 }}>
 {success && (
-          <Alert severity="success" sx={{ mt: 2, }}
+          <Alert variant="filled" severity="success" sx={{ mt: 2, }}
           onClose={handleCloseSuccessAlert}
           >
             Task added successfully!
           </Alert>
         )}
         {error && (
-          <Alert severity="error" sx={{ mt: 2, }}
+          <Alert variant="filled" severity="error" sx={{ mt: 2, }}
           onClose={handleCloseErrorAlert}
           >
             Error adding task. Please try again later.
