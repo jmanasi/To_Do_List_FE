@@ -3,20 +3,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TaskList from './TaskList';
 import { Task } from '../types';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button ,Alert} from '@mui/material';
 
 const Home: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  useEffect(() => {
+  useEffect(() => {    
     fetchTasks();
   }, []);
   
 
   const fetchTasks = async () => {
-    axios.get<Task[]>('http://localhost:5000/api/tasks')
+    axios.get<Task[]>(`${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/api/tasks`)
     .then(response => {
-      console.log('fetchTasks response',response);
       
       setTasks(response.data)}
     )
@@ -26,9 +25,8 @@ const Home: React.FC = () => {
   const handleDelete =  (id: number) => {   
     const Id={id};
      
-    axios.post<Task[]>(`http://localhost:5000/api/tasks/deleteTask`,Id)
+    axios.post<Task[]>(`${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/api/tasks/deleteTask`,Id)
     .then(response => {
-      console.log('delete task-->',response);
       
       setTasks(response.data)
     })
@@ -36,10 +34,17 @@ const Home: React.FC = () => {
   };
 
   return (
-    
     <Box p={3}>
-    <Typography variant="h4" gutterBottom>To-Do List</Typography>
-    <TaskList tasks={tasks} onDelete={handleDelete} />
+    <Typography variant="h4" gutterBottom>
+      To-Do List
+    </Typography>
+    {tasks.length === 0 ? (
+      <Alert severity="info">
+        No tasks listed. Go to add task to add a new task.
+      </Alert>
+    ) : (
+      <TaskList tasks={tasks} onDelete={handleDelete} />
+    )}
   </Box>
   );
 };

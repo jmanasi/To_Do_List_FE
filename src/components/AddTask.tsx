@@ -27,9 +27,7 @@ const AddTaskForm: React.FC = () => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       const newTask: Task = { id: 0, name, status,description };
 
-      const response = await axios.post<Task>('http://localhost:5000/api/tasks', newTask);
-  
-      console.log('okok', response);
+      const response = await axios.post<Task>(`${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/api/tasks`, newTask);
 
       setName('');
       setStatus('');
@@ -56,6 +54,22 @@ const AddTaskForm: React.FC = () => {
 sx={ { m: 1 ,justifySelf:'center'} }
 >
 <Typography variant="h4" >Add Task</Typography>
+<Box sx={{ m:10, flex: 1 }}>
+{success && (
+          <Alert variant="filled" severity="success" sx={{ mt: 2, }}
+          onClose={handleCloseSuccessAlert}
+          >
+            Task added successfully!
+          </Alert>
+        )}
+        {error && (
+          <Alert variant="filled" severity="error" sx={{ mt: 2, }}
+          onClose={handleCloseErrorAlert}
+          >
+            Error adding task. Please try again later.
+          </Alert>
+        )}
+</Box>
 <Box sx={{ m:1, flex: 1 }}>
 <Paper elevation={3} sx={{ padding: 2, m:10, backgroundColor:'ffedec' }}>
 <Container 
@@ -131,22 +145,7 @@ variant="standard"
 </FormControl>
 </Container>
 </Paper>
-<Box sx={{ m:10, flex: 1 }}>
-{success && (
-          <Alert variant="filled" severity="success" sx={{ mt: 2, }}
-          onClose={handleCloseSuccessAlert}
-          >
-            Task added successfully!
-          </Alert>
-        )}
-        {error && (
-          <Alert variant="filled" severity="error" sx={{ mt: 2, }}
-          onClose={handleCloseErrorAlert}
-          >
-            Error adding task. Please try again later.
-          </Alert>
-        )}
-</Box>
+
 
 </Box>
 </Box>
