@@ -18,18 +18,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-      {/* <AppBar position="static">
-          <Toolbar>
-            <Button component={Link} to="/" color="inherit">
-              Home
-            </Button>
-            <Button component={Link} to="/add-task" color="inherit">
-              Add Task
-            </Button>
-          </Toolbar>
-        </AppBar> */}
-         
-{/* App Bar */}
+
 <AppBar position="static" 
 // sx={{ bgcolor: 'lightblue' }}
 >
@@ -39,7 +28,7 @@ function App() {
             </Button>
           </Toolbar>
         </AppBar>
-        {/* Side Navigation */}
+
         <Drawer
           variant="temporary"
           open={open}
