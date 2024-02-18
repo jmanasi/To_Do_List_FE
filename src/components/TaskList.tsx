@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Task } from '../types';
-import {Box, Card, CardContent, CardActions, Button, Typography, Grid, Paper, Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem,Alert } from '@mui/material';
+import { Box, Card, CardContent, CardActions, Button, Typography, Grid, Paper, Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem, Alert } from '@mui/material';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
+import CloudSyncIcon from '@mui/icons-material/CloudSync';
+import NewReleasesIcon from '@mui/icons-material/NewReleases';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 interface Props {
   tasks: Task[];
@@ -21,6 +24,7 @@ const TaskList: React.FC<Props> = ({ tasks, onDelete }) => {
   const [updatedTaskDescription, setUpdatedTaskDescription] = useState('');
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleDeleteClick = (taskId: number) => {
     setTaskIdToDelete(taskId);
@@ -59,28 +63,25 @@ const TaskList: React.FC<Props> = ({ tasks, onDelete }) => {
         status: updatedTaskStatus,
         description: updatedTaskDescription
       };
-      axios.put(`http://localhost:5000/api/tasks`, updatedTask)
+      axios.put(`${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/api/tasks`, updatedTask)
         .then(response => {
-          console.log('Task updated successfully:', response.data);
           setEditDialogOpen(false);
-          setSuccess(true)
-          window.location.reload()
-
+          setSuccess(true);
+          window.location.reload();
         })
         .catch(error => {
           console.error('Error updating task:', error);
           setEditDialogOpen(false);
-          setError(true)
+          setError(true);
         });
     }
-
-};
-
+  };
 
   const handleEditCancel = () => {
     setTaskIdToEdit(null);
     setEditDialogOpen(false);
   };
+
   const handleCloseSuccessAlert = () => {
     setSuccess(false);
   };
@@ -88,26 +89,41 @@ const TaskList: React.FC<Props> = ({ tasks, onDelete }) => {
   const handleCloseErrorAlert = () => {
     setError(false);
   };
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+  const filteredTasks = tasks.filter(task => {
+    return task.name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
   return (
     <>
-    <Box sx={{ m:10, flex: 1 }}>
-{success && (
+    <Box sx={{ m: 10, flex: 1 }}>
+        {success && (
           <Alert variant="filled" severity="success" sx={{ mt: 2, }}
-          onClose={handleCloseSuccessAlert}
+            onClose={handleCloseSuccessAlert}
           >
             Task added successfully!
           </Alert>
         )}
         {error && (
           <Alert variant="filled" severity="error" sx={{ mt: 2, }}
-          onClose={handleCloseErrorAlert}
+            onClose={handleCloseErrorAlert}
           >
             Error adding task. Please try again later.
           </Alert>
         )}
-</Box>
+        <TextField
+          label="Search Tasks by Name"
+          variant="outlined"
+          onChange={handleSearchChange}
+          // fullWidth
+          sx={{ mt: 2 ,width:'70%'}}
+        />
+      </Box>
       <Grid container spacing={2}>
-        {tasks?.map(task => (
+        {filteredTasks?.map(task => (
+          
           <Grid item key={task.id} xs={12} sm={6} md={4}>
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
               <CardContent style={{ flex: '1 0 auto' }}>
@@ -117,20 +133,33 @@ const TaskList: React.FC<Props> = ({ tasks, onDelete }) => {
                     {task.name}
                   </Typography>
                 </Paper>
-                <Typography sx={{ mb: 1 }} color="text.secondary">
+                <Paper sx={{ backgroundColor: '#f0f0f0', padding: 2,  marginBottom: 1 }}>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'1px'}}>
+                {task.status =='In progress' ? <CloudSyncIcon sx={{ marginRight: 1 }} /> :
+                task.status=='Complete' ? <CheckCircleIcon sx={{ marginRight: 1 }} /> :
+                <NewReleasesIcon sx={{ marginRight: 1 }} />
+                }
+                <Typography  >
                   <strong>Status:</strong> {task.status}
+                </Typography> 
+                </div>
+
+                <Typography sx={{ mb: 1 }} >
+                  <strong>Description:</strong> {task.description}
                 </Typography>
-                <Typography sx={{ mb: 1 }} color="text.secondary">
-                  Description: {task.description}
-                </Typography>
+                </Paper>
+
               </CardContent>
               <CardActions>
-                <Button variant="outlined" startIcon={<EditIcon />} onClick={() => handleEditClick(task.id)}>
-                  Edit
-                </Button>
-                <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDeleteClick(task.id)}>
-                  Delete
-                </Button>
+                <div style={{ margin: 'auto',width:'65%', display:'flex',justifyContent:'space-around'}}>
+                  {task.status != 'Complete' &&
+                    <Button variant="outlined" startIcon={<EditIcon />} onClick={() => handleEditClick(task.id)}>
+                    Edit
+                  </Button>}
+                  <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDeleteClick(task.id)}>
+                    Delete
+                  </Button>
+                </div>
               </CardActions>
             </Card>
           </Grid>
