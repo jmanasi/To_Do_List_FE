@@ -14,7 +14,7 @@ const Home: React.FC = () => {
   
 
   const fetchTasks = async () => {
-    axios.get<Task[]>(`${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/api/tasks`)
+    axios.get<Task[]>(`${process.env.REACT_APP_BASE_URL}/api/tasks`)
     .then(response => {
       
       setTasks(response.data)}
@@ -25,7 +25,7 @@ const Home: React.FC = () => {
   const handleDelete =  (id: number) => {   
     const Id={id};
      
-    axios.post<Task[]>(`${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/api/tasks/deleteTask`,Id)
+    axios.post<Task[]>(`${process.env.REACT_APP_BASE_URL}/api/tasks/deleteTask`,Id)
     .then(response => {
       
       setTasks(response.data)

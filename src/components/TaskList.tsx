@@ -63,7 +63,7 @@ const TaskList: React.FC<Props> = ({ tasks, onDelete }) => {
         status: updatedTaskStatus,
         description: updatedTaskDescription
       };
-      axios.put(`${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/api/tasks`, updatedTask)
+      axios.put(`${process.env.REACT_APP_BASE_URL}/api/tasks`, updatedTask)
         .then(response => {
           setEditDialogOpen(false);
           setSuccess(true);

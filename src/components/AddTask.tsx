@@ -27,7 +27,7 @@ const AddTaskForm: React.FC = () => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       const newTask: Task = { id: 0, name, status,description };
 
-      const response = await axios.post<Task>(`${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/api/tasks`, newTask);
+      const response = await axios.post<Task>(`${process.env.REACT_APP_BASE_URL}/api/tasks`, newTask);
 
       setName('');
       setStatus('');
