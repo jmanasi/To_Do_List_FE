@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TaskList from './TaskList';
 import { Task } from '../types';
-import { Box, Typography, Button ,Alert} from '@mui/material';
+import { Box, Typography ,Alert} from '@mui/material';
 
 const Home: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);

@@ -64,7 +64,7 @@ const TaskList: React.FC<Props> = ({ tasks, onDelete }) => {
         description: updatedTaskDescription
       };
       axios.put(`${process.env.REACT_APP_BASE_URL}/api/tasks`, updatedTask)
-        .then(response => {
+        .then(() => {
           setEditDialogOpen(false);
           setSuccess(true);
           window.location.reload();
@@ -152,7 +152,7 @@ const TaskList: React.FC<Props> = ({ tasks, onDelete }) => {
               </CardContent>
               <CardActions>
                 <div style={{ margin: 'auto',width:'65%', display:'flex',justifyContent:'space-around'}}>
-                  {task.status != 'Complete' &&
+                  {task.status !== 'Complete' &&
                     <Button variant="outlined" startIcon={<EditIcon />} onClick={() => handleEditClick(task.id)}>
                     Edit
                   </Button>}
