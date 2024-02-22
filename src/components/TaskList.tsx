@@ -135,8 +135,8 @@ const TaskList: React.FC<Props> = ({ tasks, onDelete }) => {
                 </Paper>
                 <Paper sx={{ backgroundColor: '#f0f0f0', padding: 2,  marginBottom: 1 }}>
                 <div style={{display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'1px'}}>
-                {task.status =='In progress' ? <CloudSyncIcon sx={{ marginRight: 1 }} /> :
-                task.status=='Complete' ? <CheckCircleIcon sx={{ marginRight: 1 }} /> :
+                {task.status ==='In progress' ? <CloudSyncIcon sx={{ marginRight: 1 }} /> :
+                task.status==='Complete' ? <CheckCircleIcon sx={{ marginRight: 1 }} /> :
                 <NewReleasesIcon sx={{ marginRight: 1 }} />
                 }
                 <Typography  >

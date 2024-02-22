@@ -138,7 +138,7 @@ variant="standard"
      style={{marginTop:'20px'}}
      type="submit" variant="contained" color="primary"
        onClick={handleSubmit}
-       disabled={loading || status=="" ||name==""||description==""} 
+       disabled={loading || status==="" ||name===""||description===""} 
      >
        {loading ? <CircularProgress size={24} /> : 'Add Task'}
   </Button>
